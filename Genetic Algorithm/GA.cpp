@@ -1,5 +1,6 @@
 #include "GA.h"
 #include <iostream>
+
 void GA::Init(GA& m_GA)
 {
 	//Create popultation and generate a random string
@@ -29,12 +30,18 @@ void GA::CalcFitness(GA& m_GA) {
 }
 
 FAMILY GA::Tournament(GA& m_GA) {
+
 	FAMILY winner;
 
 	INDIVIDUAL won1;
 	INDIVIDUAL won2;
 	INDIVIDUAL won3;
 	INDIVIDUAL won4;
+
+	won1.m_fitness = 0;
+	won2.m_fitness = 0;
+	won3.m_fitness = 0;
+	won4.m_fitness = 0;
 
 	//25%
 	for (size_t i = 0; i < (m_GA.individuals.size() * 0.25); i++)
@@ -109,7 +116,38 @@ FAMILY GA::Tournament(GA& m_GA) {
 		}
 	}
 
-	std::cout << "\nBest Parents Found:\n" << winner.PA.m_string << " with " << roundf(winner.PA.m_fitness / m_GA.Target.size() * 100) << "% match " << "and " << winner.PB.m_string << " with " << roundf(winner.PB.m_fitness / m_GA.Target.size() * 100) << "% match";
+	if (!m_GA.noisy) {
+		string mstr = "\nBest Parents Found:\n" + winner.PA.m_string + " with " + std::to_string(roundf(winner.PA.m_fitness / m_GA.Target.size() * 100)) + "% match " + "and " + winner.PB.m_string + " with " + std::to_string(roundf(winner.PB.m_fitness / m_GA.Target.size() * 100)) + "% match\n";
+		Console_Clear();
+		mstr = "Solving...\n" + mstr;
+		Console_ColoredTEXT(mstr, 14);
+		//Progress Bar :D
+		
+		string green = "";
+		string red = "";
+		float progress = roundf(winner.PA.m_fitness / m_GA.Target.size() * 100);
+		if (progress >= 100) {
+			Console_Clear();
+		}
+		if (winner.PA.m_fitness < winner.PB.m_fitness) { 
+			progress = roundf(winner.PB.m_fitness / m_GA.Target.size() * 100);
+		};
+		for (size_t i = 1; i < 100; i++)
+		{
+			if (((0.01 * i)* 100) > progress) {
+				red += " ";
+			}
+			else {
+				green += " ";
+			}
+		}
+		Console_ColoredTEXT(green, 175);
+		Console_ColoredTEXT(red, 207);
+		Console_ColoredTEXT("", 14);
+	}
+	else {
+		std::cout << "\nBest Parents Found:\n" << winner.PA.m_string << " with " << roundf(winner.PA.m_fitness / m_GA.Target.size() * 100) << "% match " << "and " << winner.PB.m_string << " with " << roundf(winner.PB.m_fitness / m_GA.Target.size() * 100) << "% match";
+	}
 	
 	return winner;
 }

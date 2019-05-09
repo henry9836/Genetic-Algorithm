@@ -21,9 +21,15 @@
     <ClCompile Include="GA.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ConsoleController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GA.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ConsoleController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
